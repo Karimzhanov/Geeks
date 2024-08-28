@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Brand
+from apps.logo.models import Logo
 
-class BrandSerializer(serializers.ModelSerializer):
+class LogoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Brand
+        model = Logo
         fields = '__all__'

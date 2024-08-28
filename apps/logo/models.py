@@ -2,14 +2,12 @@ from django.db import models
 
 # Create your models here.
 
-class Brand(models.Model):
-    name = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to='brands/logos/')
-    description = models.TextField(blank=True)
+class Logo(models.Model):
+    logo = models.ImageField(upload_to='logos/', verbose_name="Логотип")
 
     def __str__(self):
-        return self.name
+        return self.logo.url if self.logo else "No logo"
+
     class Meta:
-        verbose_name = 'Бренд'
-        verbose_name_plural = 'Бренды'
-    
+        verbose_name = 'Логотип'
+        verbose_name_plural = 'Логотипы'

@@ -1,9 +1,9 @@
 from rest_framework import viewsets
-from apps.logo.models import Brand
-from apps.logo.serializers import BrandSerializer
+from apps.logo.models import Logo
+from apps.logo.serializers import LogoSerializer
 
 # Create your views here.
 
-class BrandViewSet(viewsets.ModelViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
+class LogoViewSet(viewsets.ModelViewSet):
+    queryset = Logo.objects.all()
+    serializer_class = LogoSerializer
