@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i_#^n^r&8vuj(!^lsp$b@$e1uku3=5n_&f)#sjm%c9%*iq&h&*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.31.152', '*', '172.25.160.1']
+ALLOWED_HOSTS = ['192.168.31.152', '*', '172.25.160.1'] 
 
 
 # Application definition
@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'drf_yasg',
-    'jazzmin',
+    # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -236,3 +236,5 @@ CSRF_TRUSTED_ORIGINS = [
     "http://192.168.31.152",
     "http://172.25.160.1",
 ]
+
+AUTH_USER_MODEL = 'register.User'

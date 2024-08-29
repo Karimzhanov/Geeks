@@ -1,20 +1,35 @@
-from rest_framework import viewsets, mixins
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from apps.register.serializers import RegisterSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from apps.register.serializers import UserSerializer, UserRegisterSerializer
+from apps.register.permissions import UserPermission
+from apps.register.models import User
 
-class RegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
-    serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+# Create your views here.
+class UserAPI(GenericViewSet,
+                mixins.ListModelMixin,
+                mixins.RetrieveModelMixin,
+                mixins.CreateModelMixin,
+                mixins.UpdateModelMixin,
+                mixins.DestroyModelMixin):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer(queryset)
+    permission_classes = [UserPermission]
+    authentication_classes = [JWTAuthentication]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+    
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return UserRegisterSerializer
+        return UserSerializer
 
-        return Response({
-            "user": {
-                "username": user.username,
-            },
-            "message": "User registered successfully",
-        })
+    def get_permissions(self):
+        if self.request.method in ('DELETE', 'PUT', 'PATCH'):
+            return (UserPermission(), )
+        return (AllowAny(), )
+    
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
